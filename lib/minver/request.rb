@@ -13,6 +13,7 @@ module Minver
           puts headers.to_yaml if $DEBUG
           params.merge! case type = headers["Content-Type"]
           when 'application/json'
+            require 'json'
             JSON.parse(body)
           when 'application/x-www-form-urlencoded'
             Hash[URI.decode_www_form(body)]
