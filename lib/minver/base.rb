@@ -69,7 +69,7 @@ module Minver
     end
 
     def on(method, uri, &block)
-      triggers[method][uri] = block
+      triggers[method][normalize_path(uri)] = block
     end
 
     HTTP_METHODS.each do |method|
@@ -93,7 +93,7 @@ module Minver
           begin
             request = Request.new(client)
             $stderr.puts request.data.lines.map{|l| "< #{l}"} if $DEBUG
-            block = triggers[request.http_method][request.path]
+            block = triggers[request.http_method][normalize_path(request.path)]
             response = if block
               begin
                 Response.from(instance_exec(request, &block))
@@ -133,6 +133,11 @@ module Minver
     end
 
   protected
+
+    def normalize_path(path)
+      path.squeeze("/").chomp "/"
+    end
+
     def triggers
       @triggers ||= HTTP_METHODS.inject({}){ |h, m| h.merge(m => {}) }
     end
