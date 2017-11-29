@@ -14,10 +14,6 @@ module Minver
       @http_method ||= request_match[1]
     end
 
-    def request_url
-      @request_url ||= request_match[2]
-    end
-
     def request_http_version
       @request_http_version ||= request_match[3]
     end
@@ -41,14 +37,18 @@ module Minver
     end
 
     def path
-      @path ||= request_url.split('?')[0]
+      @path ||= request_uri.first
     end
 
     def query_string
-      @query_string ||= request_url.split('?')[1] || ''
+      @query_string ||= request_uri[1] || ''
     end
 
   protected
+    def request_uri
+      @request_uri ||= request_match[2].split('?', 2)
+    end
+
     def request_match
       @request_match ||= request_line.match(/(\S+)\s+(\S+)(?:\s+HTTP\/(\S+)?)/)
     end
