@@ -1,5 +1,4 @@
-require "minver/version"
+module Minver; end
 
-module Minver
-  # Your code goes here...
-end
+require 'minver/base'
+require 'minver/version'
