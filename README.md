@@ -40,10 +40,10 @@ end
 
 server.post "/age" do |request|
   age = request.params["age"].to_i
-  # pass this param to the caller
   if age < 5
     [400, {}, "Hey there, fella. You better ask your parents to use this app instead."]
   else
+    # pass this param to the caller
     pass age: age
     "Thank you, your age has been submitted!"
   end
